@@ -1,11 +1,9 @@
 import requests
 import os
 import json
-import eth_abi
 from pprint import pprint
 import time
 from web3 import Web3
-from itertools import count
 
 # Connect to the Ethereum network or your preferred provider
 web3 = Web3(
@@ -14,12 +12,10 @@ web3 = Web3(
     )
 )
 
-# class web3.contract.Contract(address)
 ETHERSCAN_API_KEY = os.environ.get("ETHERSCAN_API_KEY")
 
 
 def load_transactions(contract_address):
-    # contract_address_checksumed = Web3.to_checksum_address(contract_address)
     startblock = "16350193"
     old_startblock = None
     while True:
@@ -67,4 +63,3 @@ contract_addresses = [
 
 for contract_address in contract_addresses:
     load_transactions(contract_address)
-

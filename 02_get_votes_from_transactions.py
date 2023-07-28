@@ -101,6 +101,7 @@ def get_votes_for_contract(contract_address):
         writer = csv.writer(csv_file)
         writer.writerow(["token", "amount", "grant_address", "project_id"])
         with open(file_path, "r") as file:
+            processed_transactions = set()
             with tqdm(
                 total=file_size, desc="Loading transactions", unit="B", unit_scale=True
             ) as pbar:
@@ -111,8 +112,12 @@ def get_votes_for_contract(contract_address):
                         len(line)
                     )  # Update the progress bar based on the number of bytes read
                     try:
-                        votes = get_votes_info(contract, json_object)
-                        writer.writerows(votes)
+                        # Deduplicate transactions, as we might have pulled down duplicates
+                        if json_object["hash"] not in processed_transactions:
+                            processed_transactions.add(json_object["hash"])
+                            votes = get_votes_info(contract, json_object)
+                            writer.writerows(votes)
+
                         # print(votes)
                     except NotAVoteException:
                         pass
