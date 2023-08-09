@@ -8,6 +8,7 @@ requests = "*"
 eth-abi = "*"
 web3 = "*"
 tqdm = "*"
+pandas = "*"
 
 [dev-packages]
 
